@@ -48,9 +48,7 @@ Use the following signature in the email:
 Signature start here -
 
 Best Regards,
-Priyanshu Jain, Founder @Repleaf
-
-Repleaf - Build Credibility, Unlock Opportunities
+Priyanshu Jain, Founder @Repleaf - Build Credibility, Unlock Opportunities
 Website - https://repleaf.com/
 
 Signature end here -
