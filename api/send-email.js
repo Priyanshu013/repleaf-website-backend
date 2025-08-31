@@ -50,6 +50,7 @@ Priyanshu Jain, Founder @Repleaf
 
 Repleaf - Build Credibility, Unlock Opportunities
 Website - https://repleaf.com/
+
 ---------------
 
 Return the complete HTML email body with proper formatting.`;
