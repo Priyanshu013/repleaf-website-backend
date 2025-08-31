@@ -1,5 +1,5 @@
+// api/send-email.js
 import nodemailer from "nodemailer";
-import fetch from "node-fetch";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -8,46 +8,33 @@ export default async function handler(req, res) {
 
   const { firstName, lastName, email, headline } = req.body;
 
+  if (!firstName || !lastName || !email || !headline) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
   try {
-    // 1. Ask Gemini for personalized text
-    const prompt = `Write a short engaging message explaining how Repleaf will help ${firstName} ${lastName}, a ${headline}, build credibility through the Repleaf Score.`;
-
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=" +
-        process.env.GEMINI_API_KEY,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-        }),
-      }
-    );
-
-    const data = await response.json();
-    const aiMessage =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Your personalized Repleaf guide is on its way!";
-
-    // 2. Send via email
+    // Example: send via Gmail SMTP (you can switch to any provider)
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.EMAIL_USER, // set in Vercel env
+        pass: process.env.EMAIL_PASS, // set in Vercel env
       },
     });
 
+    // AI personalization (simplest placeholder, replace with Gemini call later)
+    const personalizedMessage = `Hi ${firstName},\n\nThanks for signing up as ${headline}.\nThis is your personalized Repleaf guide.\n\nBest,\nRepleaf Team`;
+
     await transporter.sendMail({
-      from: `"Repleaf" <${process.env.SMTP_USER}>`,
+      from: `"Repleaf" <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Your Personalized Repleaf Guide 🌱",
-      html: `<p>Hi ${firstName},</p><p>${aiMessage}</p><br/><p>— The Repleaf Team 🌿</p>`,
+      subject: "Your Personalized Repleaf Guide",
+      text: personalizedMessage,
     });
 
-    res.status(200).json({ success: true, message: "Email sent!" });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ success: false, error: "Failed to send email" });
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Email error:", err);
+    return res.status(500).json({ error: "Failed to send email" });
   }
 }
