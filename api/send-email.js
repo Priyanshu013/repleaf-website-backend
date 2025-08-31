@@ -69,7 +69,17 @@ Return the complete HTML email body with proper formatting.`;
     const data = await response.json();
 
     if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-      return data.candidates[0].content.parts[0].text;
+      let generatedText = data.candidates[0].content.parts[0].text;
+
+      // Clean up any markdown code blocks or unwanted formatting
+      generatedText = generatedText
+        .replace(/```html\s*/gi, "") // Remove ```html
+        .replace(/```\s*/gi, "") // Remove ```
+        .replace(/^html\s*/i, "") // Remove "html" at the start
+        .trim(); // Remove extra whitespace
+
+      console.log("Cleaned AI response:", generatedText);
+      return generatedText;
     } else {
       throw new Error("Invalid response format from Gemini API");
     }
