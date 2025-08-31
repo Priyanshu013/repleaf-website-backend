@@ -41,7 +41,16 @@ The email should:
 - Keep it concise (2-3 paragraphs max)
 - End with a warm sign-off
 
-Make it feel like it was written specifically for ${firstName} based on their "${headline}" background.
+Make it feel like it was written specifically for ${firstName} based on their "${headline}" background. 
+
+Use the following signature in the email: 
+---------------
+Best Regards,
+Priyanshu Jain, Founder @Repleaf
+
+Repleaf - Build Credibility, Unlock Opportunities
+Website - https://repleaf.com/
+---------------
 
 Return the complete HTML email body with proper formatting.`;
 
@@ -93,8 +102,12 @@ Thanks for signing up as ${headline}.
 We're thrilled to have you join us. Repleaf is the world’s first platform where your professional reputation is built on skills, not just words.
 Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
 
-Best,
-Repleaf Team`;
+Best Regards,
+Priyanshu Jain, Founder @Repleaf
+
+Repleaf - Build Credibility, Unlock Opportunities
+Website - https://repleaf.com/
+`;
   }
 }
 
