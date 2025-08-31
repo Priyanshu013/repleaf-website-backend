@@ -38,10 +38,11 @@ The email should:
   * <ul> and <li> for bullet points
   * <p> for paragraphs
   * <em> for emphasis
-- Keep it concise (2-3 paragraphs max)
+- Keep it concise (4-5 paragraphs max)
 - End with a warm sign-off
 
 Make it feel like it was written specifically for ${firstName} based on their "${headline}" background. 
+Talk a bit more about how Repleaf can specifically help them in their work.
 
 Use the following signature in the email: 
 
