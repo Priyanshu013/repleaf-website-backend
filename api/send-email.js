@@ -24,7 +24,7 @@ async function generatePersonalizedEmail(firstName, headline) {
 WorkLynk is the world’s first platform where people's professional reputation is built on skills, not just words.
 Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
 
-Create a warm, personalized welcome email for a new user named ${firstName} who signed up as "${headline}".
+Create a warm, personalized welcome email for a new user named ${firstName} who signed up as "${headline}". Make sure to format the email really well in HTML.
 
 The email should:
 - Be welcoming and personal
@@ -73,7 +73,8 @@ Return only the email body text, no subject line or formatting.`;
     return `Hi ${firstName},
 
 Thanks for signing up as ${headline}.
-This is your personalized Repleaf guide.
+We're thrilled to have you join us. WorkLynk is the world’s first platform where your professional reputation is built on skills, not just words.
+Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
 
 Best,
 Repleaf Team`;
