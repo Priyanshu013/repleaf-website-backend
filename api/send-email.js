@@ -35,7 +35,7 @@ export default async function handler(req, res) {
     const personalizedMessage = `Hi ${firstName},\n\nThanks for signing up as ${headline}.\nThis is your personalized Repleaf guide.\n\nBest,\nRepleaf Team`;
 
     await transporter.sendMail({
-      from: `"Repleaf" <${process.env.SMTP_USER}>`,
+      from: `"Priyanshu @Repleaf" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Your Personalized Repleaf Guide",
       text: personalizedMessage,
