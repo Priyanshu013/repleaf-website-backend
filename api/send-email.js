@@ -27,15 +27,15 @@ export default async function handler(req, res) {
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     });
 
     const personalizedMessage = `Hi ${firstName},\n\nThanks for signing up as ${headline}.\nThis is your personalized Repleaf guide.\n\nBest,\nRepleaf Team`;
 
     await transporter.sendMail({
-      from: `"Repleaf" <${process.env.EMAIL_USER}>`,
+      from: `"Repleaf" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Your Personalized Repleaf Guide",
       text: personalizedMessage,
