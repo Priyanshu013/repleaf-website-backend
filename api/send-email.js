@@ -21,7 +21,7 @@ async function generatePersonalizedEmail(firstName, headline) {
 
     const prompt = `You are a professional email writer for Repleaf, a company that helps people build professional credibility.
 
-WorkLynk is the world’s first platform where people's professional reputation is built on skills, not just words.
+Repleaf is the world's first platform where people's professional reputation is built on skills, not just words.
 Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
 
 Create a warm, personalized welcome email for a new user named ${firstName} who signed up as "${headline}". Make sure to format the email really well in HTML.
@@ -29,14 +29,20 @@ Create a warm, personalized welcome email for a new user named ${firstName} who 
 The email should:
 - Be welcoming and personal
 - Reference their specific headline/role
-- Explain what Repleaf offers
+- Explain what Repleaf offers with clear benefits
 - Be encouraging and motivating
+- Use proper HTML formatting with:
+  * <h2> for section headers
+  * <strong> for important points
+  * <ul> and <li> for bullet points
+  * <p> for paragraphs
+  * <em> for emphasis
 - Keep it concise (2-3 paragraphs max)
 - End with a warm sign-off
 
 Make it feel like it was written specifically for ${firstName} based on their "${headline}" background.
 
-Return only the email body text, no subject line or formatting.`;
+Return the complete HTML email body with proper formatting.`;
 
     const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: "POST",
@@ -73,7 +79,7 @@ Return only the email body text, no subject line or formatting.`;
     return `Hi ${firstName},
 
 Thanks for signing up as ${headline}.
-We're thrilled to have you join us. WorkLynk is the world’s first platform where your professional reputation is built on skills, not just words.
+We're thrilled to have you join us. Repleaf is the world’s first platform where your professional reputation is built on skills, not just words.
 Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
 
 Best,
@@ -131,7 +137,8 @@ export default async function handler(req, res) {
       from: `"Priyanshu @Repleaf" <${process.env.SMTP_USER}>`,
       to: email,
       subject: "Your Personalized Repleaf Guide",
-      text: personalizedMessage,
+      html: personalizedMessage,
+      text: personalizedMessage.replace(/<[^>]*>/g, ""), // Fallback plain text version
     });
 
     console.log("Email sent successfully");
