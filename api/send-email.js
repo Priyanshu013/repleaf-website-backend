@@ -2,6 +2,16 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
+  // ✅ Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // ✅ Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -13,16 +23,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Example: send via Gmail SMTP (you can switch to any provider)
+    // Example Gmail SMTP (replace with SendGrid, Mailgun, etc. if needed)
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER, // set in Vercel env
-        pass: process.env.EMAIL_PASS, // set in Vercel env
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // AI personalization (simplest placeholder, replace with Gemini call later)
     const personalizedMessage = `Hi ${firstName},\n\nThanks for signing up as ${headline}.\nThis is your personalized Repleaf guide.\n\nBest,\nRepleaf Team`;
 
     await transporter.sendMail({
