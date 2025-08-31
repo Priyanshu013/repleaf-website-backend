@@ -54,7 +54,7 @@ Website - https://repleaf.com/
 Signature end here -
 
 
-Return the complete HTML email body with proper formatting, just the way google sends its automated emails (All text within a beautiful center aligned container)`;
+Return the complete HTML email body with proper formatting, just the way google sends its automated emails (All text within a beautiful container, and left aligned text.)`;
 
     const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
       method: "POST",
