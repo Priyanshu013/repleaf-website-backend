@@ -44,14 +44,14 @@ The email should:
 Make it feel like it was written specifically for ${firstName} based on their "${headline}" background. 
 
 Use the following signature in the email: 
----------------
+
 Best Regards,
 Priyanshu Jain, Founder @Repleaf
 
 Repleaf - Build Credibility, Unlock Opportunities
 Website - https://repleaf.com/
 
----------------
+
 
 Return the complete HTML email body with proper formatting.`;
 
