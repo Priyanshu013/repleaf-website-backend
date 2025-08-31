@@ -45,12 +45,15 @@ Make it feel like it was written specifically for ${firstName} based on their "$
 
 Use the following signature in the email: 
 
+Signature start here -
+
 Best Regards,
 Priyanshu Jain, Founder @Repleaf
 
 Repleaf - Build Credibility, Unlock Opportunities
 Website - https://repleaf.com/
 
+Signature end here -
 
 
 Return the complete HTML email body with proper formatting.`;
