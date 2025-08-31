@@ -103,10 +103,19 @@ export default async function handler(req, res) {
 
   try {
     // Generate personalized email using AI
+    console.log(
+      "About to generate personalized email for:",
+      firstName,
+      "as",
+      headline
+    );
     const personalizedMessage = await generatePersonalizedEmail(
       firstName,
       headline
     );
+
+    console.log("Final personalized message:", personalizedMessage);
+    console.log("Message length:", personalizedMessage.length);
 
     // Example Gmail SMTP (replace with SendGrid, Mailgun, etc. if needed)
     let transporter = nodemailer.createTransport({
@@ -124,6 +133,7 @@ export default async function handler(req, res) {
       text: personalizedMessage,
     });
 
+    console.log("Email sent successfully");
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error("Email error:", err);
