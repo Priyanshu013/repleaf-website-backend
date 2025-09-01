@@ -30,6 +30,7 @@ If the user has entered some random headline which does not make sense, then sim
 The email should:
 - Include a properly sized logo at top - https://drive.google.com/file/d/1FjBPnthL6DYNvsHdCphCiHvzh1vS7Aw0/view?usp=sharing
 - Be welcoming and personal
+- Use appropriate font sizing and colors. Use Montserrat font family.Mail text should look super pretty.
 - Reference their specific headline/role
 - Explain what Repleaf offers with clear benefits
 - Be encouraging and motivating
