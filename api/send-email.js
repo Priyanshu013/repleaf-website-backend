@@ -137,6 +137,8 @@ async function saveToGoogleSheets(firstName, lastName, email, headline) {
       domain: headline,
     });
 
+    console.log("Form data string:", formData.toString());
+
     const response = await fetch(scriptUrl, {
       method: "POST",
       headers: {
@@ -145,22 +147,38 @@ async function saveToGoogleSheets(firstName, lastName, email, headline) {
       body: formData.toString(),
     });
 
+    console.log("Response status:", response.status);
+    console.log(
+      "Response headers:",
+      Object.fromEntries(response.headers.entries())
+    );
+
     if (!response.ok) {
-      throw new Error(`Google Sheets API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error("Error response body:", errorText);
+      throw new Error(
+        `Google Sheets API error: ${response.status} - ${errorText}`
+      );
     }
 
     // Google Apps Script returns text, not JSON
     const result = await response.text();
-    console.log("Google Sheets response:", result);
+    console.log("Google Sheets raw response:", result);
+    console.log("Response length:", result.length);
 
     // Check if the response indicates success
-    if (result.includes("success")) {
+    if (result.includes("success") || result.includes("Success")) {
+      console.log("Google Sheets operation successful");
       return { success: true };
     } else {
-      throw new Error("Google Sheets did not return success response");
+      console.error("Google Sheets response does not contain success:", result);
+      throw new Error(
+        `Google Sheets did not return success response: ${result}`
+      );
     }
   } catch (error) {
     console.error("Google Sheets save error:", error);
+    console.error("Error stack:", error.stack);
     throw error;
   }
 }
