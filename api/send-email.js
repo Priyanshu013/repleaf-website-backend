@@ -121,7 +121,7 @@ Website - https://repleaf.com/
 async function saveToGoogleSheets(firstName, lastName, email, headline) {
   try {
     const scriptUrl =
-      "https://script.google.com/macros/s/AKfycby0KXgyotCFs3gE674tyKu8lXhnLTgAOBXufrazuB5aZZJCe4a34f4Tg8yQjD8JqFIqjg/exec";
+      "https://script.google.com/macros/s/AKfycbxYAeMEl8PIh50DkFvznMAEv7k1-MsUq7IOlwdeLQngEyMfcAa5PGbrPmcGvOSuBylOpw/exec";
 
     const formData = new URLSearchParams({
       firstname: firstName,
