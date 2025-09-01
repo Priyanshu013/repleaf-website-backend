@@ -28,13 +28,14 @@ Create a warm, personalized welcome email for a new user named ${firstName} who 
 If the user has entered some random headline which does not make sense, then simply explain what is Repleaf and how it can help them in general.
 
 The email should:
+- Include a properly sized logo at top - https://drive.google.com/file/d/1FjBPnthL6DYNvsHdCphCiHvzh1vS7Aw0/view?usp=sharing
 - Be welcoming and personal
 - Reference their specific headline/role
 - Explain what Repleaf offers with clear benefits
 - Be encouraging and motivating
 - Use proper HTML formatting with:
   * <h2> for section headers
-  * <strong> for important points
+  * <strong> for important points   
   * <ul> and <li> for bullet points
   * <p> for paragraphs
   * <em> for emphasis
