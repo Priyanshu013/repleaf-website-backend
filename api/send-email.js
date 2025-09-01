@@ -30,6 +30,7 @@ that Repleaf is not launched yet, and will soon be going live on Play Store and 
 
 The email should:
 - Be welcoming and personal
+- Inform the user that Repleaf is not launched yet, and will soon be going live on Play Store and App store.
 - Use appropriate font sizing and colors. Use Montserrat font family.Mail text should look super pretty.
 - Reference their specific headline/role
 - Explain what Repleaf offers with clear benefits
