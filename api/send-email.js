@@ -25,7 +25,8 @@ Repleaf is the world's first platform where people's professional reputation is 
 Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Repleaf Score — a measure employers actually understand.
 
 Create a warm, personalized welcome email for a new user named ${firstName} who works as "${headline}". Make sure to format the email really well in HTML.
-If the user has entered some random headline which does not make sense, then simply explain what is Repleaf and how it can help them in general.
+If the user has entered some random headline which does not make sense, then simply explain what is Repleaf and how it can help them in general. Just Know
+that Repleaf is not launched yet, and will soon be going live on Play Store and App store.
 
 The email should:
 - Be welcoming and personal
