@@ -130,6 +130,13 @@ async function saveToGoogleSheets(firstName, lastName, email, headline) {
       domain: headline, // Using headline as domain parameter
     });
 
+    console.log("Sending data to Google Sheets:", {
+      firstname: firstName,
+      lastname: lastName,
+      email: email,
+      domain: headline,
+    });
+
     const response = await fetch(scriptUrl, {
       method: "POST",
       headers: {
@@ -142,9 +149,16 @@ async function saveToGoogleSheets(firstName, lastName, email, headline) {
       throw new Error(`Google Sheets API error: ${response.status}`);
     }
 
-    const result = await response.json();
+    // Google Apps Script returns text, not JSON
+    const result = await response.text();
     console.log("Google Sheets response:", result);
-    return result;
+
+    // Check if the response indicates success
+    if (result.includes("success")) {
+      return { success: true };
+    } else {
+      throw new Error("Google Sheets did not return success response");
+    }
   } catch (error) {
     console.error("Google Sheets save error:", error);
     throw error;
@@ -190,8 +204,14 @@ export default async function handler(req, res) {
 
     // Save user details to Google Sheets
     console.log("Saving user details to Google Sheets...");
-    await saveToGoogleSheets(firstName, lastName, email, headline);
-    console.log("User details saved to Google Sheets successfully");
+    try {
+      await saveToGoogleSheets(firstName, lastName, email, headline);
+      console.log("User details saved to Google Sheets successfully");
+    } catch (sheetsError) {
+      console.error("Failed to save to Google Sheets:", sheetsError);
+      // Continue with email sending even if Google Sheets fails
+      console.log("Continuing with email sending despite Google Sheets error");
+    }
 
     // Example Gmail SMTP (replace with SendGrid, Mailgun, etc. if needed)
     let transporter = nodemailer.createTransport({
