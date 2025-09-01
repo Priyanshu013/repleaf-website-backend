@@ -22,7 +22,7 @@ async function generatePersonalizedEmail(firstName, headline) {
     const prompt = `You are a professional email writer for Repleaf, a company that helps people build professional credibility.
 
 Repleaf is the world's first platform where people's professional reputation is built on skills, not just words.
-Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
+Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Repleaf Score — a measure employers actually understand.
 
 Create a warm, personalized welcome email for a new user named ${firstName} who works as "${headline}". Make sure to format the email really well in HTML.
 If the user has entered some random headline which does not make sense, then simply explain what is Repleaf and how it can help them in general.
@@ -105,7 +105,7 @@ Return the complete HTML email body with proper formatting, just the way google 
 
 Thanks for signing up as ${headline}.
 We're thrilled to have you join us. Repleaf is the world’s first platform where your professional reputation is built on skills, not just words.
-Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Trust Score — a measure employers actually understand.
+Take smart, domain-specific challenges, get peer-reviewed ratings, and grow your Repleaf Score — a measure employers actually understand.
 
 Best Regards,
 Priyanshu Jain, Founder @Repleaf
