@@ -199,9 +199,18 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  console.log("API called with method:", req.method);
+  console.log("Request body:", req.body);
+
   const { firstName, lastName, email, headline } = req.body;
 
   if (!firstName || !lastName || !email || !headline) {
+    console.log("Missing required fields:", {
+      firstName,
+      lastName,
+      email,
+      headline,
+    });
     return res.status(400).json({ error: "Missing fields" });
   }
 
@@ -252,7 +261,12 @@ export default async function handler(req, res) {
     console.log("Email sent successfully");
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Error:", err);
-    return res.status(500).json({ error: "Failed to process request" });
+    console.error("Error in send-email API:", err);
+    console.error("Error stack:", err.stack);
+    return res.status(500).json({
+      error: "Failed to process request",
+      details: err.message,
+      success: false,
+    });
   }
 }
