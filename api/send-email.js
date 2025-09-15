@@ -46,7 +46,7 @@ The email should:
 - End with a warm sign-off
 
 Make it feel like it was written specifically for ${firstName} based on their "${headline}" background. 
-Talk a bit more about how Repleaf can specifically help them in their work.
+Talk more about how Repleaf can specifically help them in their work, based on their headline. Also, somewhere mention that this is an automated email, and that they can still reply to it if they have any questions.
 
 Use the following signature in the email: 
 
@@ -185,87 +185,124 @@ async function saveToGoogleSheets(firstName, lastName, email, headline) {
 }
 
 export default async function handler(req, res) {
-  // ✅ Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // ✅ Handle preflight OPTIONS request
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  console.log("API called with method:", req.method);
-  console.log("Request body:", req.body);
-
-  const { firstName, lastName, email, headline } = req.body;
-
-  if (!firstName || !lastName || !email || !headline) {
-    console.log("Missing required fields:", {
-      firstName,
-      lastName,
-      email,
-      headline,
-    });
-    return res.status(400).json({ error: "Missing fields" });
-  }
-
   try {
-    // Generate personalized email using AI
-    console.log(
-      "About to generate personalized email for:",
-      firstName,
-      "as",
-      headline
-    );
-    const personalizedMessage = await generatePersonalizedEmail(
-      firstName,
-      headline
-    );
+    console.log("=== API HANDLER START ===");
+    console.log("Method:", req.method);
+    console.log("URL:", req.url);
+    console.log("Headers:", req.headers);
 
-    console.log("Final personalized message:", personalizedMessage);
-    console.log("Message length:", personalizedMessage.length);
+    // ✅ Set CORS headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    // Save user details to Google Sheets
-    console.log("Saving user details to Google Sheets...");
-    try {
-      await saveToGoogleSheets(firstName, lastName, email, headline);
-      console.log("User details saved to Google Sheets successfully");
-    } catch (sheetsError) {
-      console.error("Failed to save to Google Sheets:", sheetsError);
-      // Continue with email sending even if Google Sheets fails
-      console.log("Continuing with email sending despite Google Sheets error");
+    // ✅ Handle preflight OPTIONS request
+    if (req.method === "OPTIONS") {
+      console.log("Handling OPTIONS request");
+      return res.status(200).end();
     }
 
-    // Example Gmail SMTP (replace with SendGrid, Mailgun, etc. if needed)
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    if (req.method !== "POST") {
+      console.log("Method not allowed:", req.method);
+      return res.status(405).json({ error: "Method not allowed" });
+    }
 
-    await transporter.sendMail({
-      from: `"Priyanshu @Repleaf" <${process.env.SMTP_USER}>`,
-      to: email,
-      subject: "Your Personalized Repleaf Guide",
-      html: personalizedMessage,
-      text: personalizedMessage.replace(/<[^>]*>/g, ""), // Fallback plain text version
-    });
+    console.log("Request body:", req.body);
+    console.log("Environment check:");
+    console.log("GEMINI_API_KEY exists:", !!process.env.GEMINI_API_KEY);
+    console.log("GEMINI_API_URL exists:", !!process.env.GEMINI_API_URL);
+    console.log("SMTP_USER exists:", !!process.env.SMTP_USER);
+    console.log("SMTP_PASS exists:", !!process.env.SMTP_PASS);
 
-    console.log("Email sent successfully");
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error("Error in send-email API:", err);
-    console.error("Error stack:", err.stack);
+    const { firstName, lastName, email, headline } = req.body;
+
+    if (!firstName || !lastName || !email || !headline) {
+      console.log("Missing required fields:", {
+        firstName,
+        lastName,
+        email,
+        headline,
+      });
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    try {
+      // Generate personalized email using AI
+      console.log(
+        "About to generate personalized email for:",
+        firstName,
+        "as",
+        headline
+      );
+      const personalizedMessage = await generatePersonalizedEmail(
+        firstName,
+        headline
+      );
+
+      console.log("Final personalized message:", personalizedMessage);
+      console.log("Message length:", personalizedMessage.length);
+
+      // Save user details to Google Sheets
+      console.log("Saving user details to Google Sheets...");
+      try {
+        await saveToGoogleSheets(firstName, lastName, email, headline);
+        console.log("User details saved to Google Sheets successfully");
+      } catch (sheetsError) {
+        console.error("Failed to save to Google Sheets:", sheetsError);
+        // Continue with email sending even if Google Sheets fails
+        console.log(
+          "Continuing with email sending despite Google Sheets error"
+        );
+      }
+
+      // Gmail SMTP configuration
+      console.log("SMTP Configuration:");
+      console.log("SMTP_USER:", process.env.SMTP_USER);
+      console.log("SMTP_PASS length:", process.env.SMTP_PASS?.length);
+      console.log(
+        "SMTP_PASS starts with:",
+        process.env.SMTP_PASS?.substring(0, 4)
+      );
+
+      let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS, // This should be an App Password
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"Priyanshu @Repleaf" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "Your Personalized Repleaf Guide",
+        html: personalizedMessage,
+        text: personalizedMessage.replace(/<[^>]*>/g, ""), // Fallback plain text version
+      });
+
+      console.log("Email sent successfully");
+      return res.status(200).json({ success: true });
+    } catch (err) {
+      console.error("Error in send-email API:", err);
+      console.error("Error stack:", err.stack);
+      return res.status(500).json({
+        error: "Failed to process request",
+        details: err.message,
+        success: false,
+      });
+    }
+  } catch (handlerError) {
+    console.error("=== HANDLER ERROR ===");
+    console.error("Handler error:", handlerError);
+    console.error("Handler error stack:", handlerError.stack);
     return res.status(500).json({
-      error: "Failed to process request",
-      details: err.message,
+      error: "Handler error",
+      details: handlerError.message,
       success: false,
     });
   }
